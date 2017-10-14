@@ -1,0 +1,45 @@
+
+testmysql:
+  image: mariadb
+  environment:
+    - MYSQL_URL=mysql
+    - MYSQL_DB=gennydb
+    - MYSQL_PORT=3306
+    - MYSQL_ALLOW_EMPTY=
+    - MYSQL_RANDOM_ROOT_PASSWORD=no
+    - MYSQL_DATABASE=gennydb
+    - MYSQL_USER=genny
+    - MYSQL_PASSWORD=password
+    - MYSQL_ROOT_PASSWORD=password
+    - ADMIN_USERNAME=admin
+    - ADMIN_PASSWORD=password
+  ports:
+    - "3333:3306"
+   
+
+
+keycloak-manager:
+  image: gennyproject/keycloak-manager:latest 
+  links:
+    - testmysql:mysql
+  env_file:
+    - ${ENV_FILE}
+  environment:
+    - MYSQL_URL=mysql
+    - MYSQL_DATABASE=gennydb
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_ALLOW_EMPTY=
+    - MYSQL_RANDOM_ROOT_PASSWORD=no
+    - MYSQL_DB=gennydb
+    - MYSQL_PORT=3306
+    - MYSQL_USER=genny
+    - MYSQL_PASSWORD=password
+    - ADMIN_USERNAME=admin
+    - ADMIN_PASSWORD=password
+    - CORS_ALLOWED_ORIGINS="https://genny.outcome-hub.com,http://qwanda-service.outcome-hub.com,https://qwanda-service.outcome-hub.com,http://localhost:59080,http://localhost:3000,http://localhost:5000,http://localhost:8998"
+  ports:
+    - "59080:8080"
+
+   
+
+

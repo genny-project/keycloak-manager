@@ -1,0 +1,97 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+<!-- 	<context-param>
+		<param-name>resteasy.media.type.mappings</param-name>
+		<param-value>json : application/json, xml : application/xml</param-value>
+	</context-param> -->
+	
+ 	<context-param>
+        <param-name>keycloak.config.resolver</param-name>
+        <param-value>life.genny.qwanda.util.PathBasedKeycloakConfigResolver</param-value>
+    </context-param>  
+	
+	<filter>
+        <filter-name>Keycloak Management Service</filter-name>
+        <filter-class>
+            org.jboss.resteasy.plugins.server.servlet.FilterDispatcher
+        </filter-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>life.genny.qwanda.endpoint.RestApplication</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>Keycloak Management Service</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	
+	<servlet>
+		<servlet-name>Jersey2Config</servlet-name>
+		<servlet-class>io.swagger.jaxrs.config.DefaultJaxrsConfig</servlet-class>
+		<init-param>
+			<param-name>api.version</param-name>
+			<param-value>1.0.0</param-value>
+		</init-param>
+		<init-param>
+			<param-name>swagger.api.basepath</param-name>
+			<param-value>http://localhost:9280/</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>Swagger</web-resource-name>
+	        <url-pattern>/swagger.json</url-pattern>
+	    </web-resource-collection>
+	</security-constraint>
+	
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>Swagger UI</web-resource-name>
+	        <url-pattern>/api-docs/*</url-pattern>
+	    </web-resource-collection>
+	<auth-constraint>
+        <role-name>user</role-name>
+    </auth-constraint>
+	</security-constraint>
+	
+
+	
+		<security-constraint>
+		<web-resource-collection>
+		<web-resource-name>Keycloak Management Service</web-resource-name>
+			<url-pattern>/keycloak/*</url-pattern>
+		</web-resource-collection>
+	<auth-constraint>
+        <role-name>admin</role-name>
+    </auth-constraint>
+	</security-constraint>
+	
+
+	<login-config>
+		<auth-method>KEYCLOAK</auth-method>
+	</login-config>
+
+	<security-role>
+		<role-name>admin</role-name>
+	</security-role>
+	<security-role>
+		<role-name>user</role-name>
+	</security-role>
+	
+  
+	
+</web-app>
