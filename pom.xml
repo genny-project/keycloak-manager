@@ -19,7 +19,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<version.h2>1.4.195</version.h2>
+		<version.h2>2.0.206</version.h2>
 		<version.postgresql>9.4.1207</version.postgresql>
 		<version.mysql>5.1.38</version.mysql>
 
